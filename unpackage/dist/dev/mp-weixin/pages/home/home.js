@@ -41,9 +41,7 @@ const _sfc_main = {
       } = await common_vendor.index.$http.get("/api/public/v1/home/floordata");
       if (res.meta.status !== 200)
         return common_vendor.index.$showMsg();
-      console.log(res.message.length);
       res.message.forEach((floor) => {
-        console.log(11, floor.product_list);
         floor.product_list.forEach((prod) => {
           prod.url = "/subpkg/goods_list/goods_list?" + prod.navigator_url.split("?")[1];
         });

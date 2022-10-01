@@ -33,14 +33,11 @@
       </navigator>
       <!-- 右侧 4 个小图片的盒子 -->
       <view class="right-img-box">
-
         <navigator class="right-img-item" v-for="(item2, index) in item.product_list" :key="index" :url="item2.url">
           <template v-if="index !== 0">
             <image :src="item2.image_src" mode="widthFix" :style="{width: item2.image_width + 'rpx'}"></image>
           </template>
         </navigator>
-
-
       </view>
     </view>
   </view>
@@ -103,9 +100,7 @@
     } = await uni.$http.get('/api/public/v1/home/floordata')
     if (res.meta.status !== 200) return uni.$showMsg()
     // 通过双层 forEach 循环，处理 URL 地址
-    console.log(res.message.length)
     res.message.forEach(floor => {
-      console.log(11, floor.product_list)
       floor.product_list.forEach(prod => {
         prod.url = '/subpkg/goods_list/goods_list?' + prod.navigator_url.split('?')[1]
       })
