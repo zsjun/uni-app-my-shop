@@ -1,5 +1,13 @@
 "use strict";
 var common_vendor = require("../../common/vendor.js");
+if (!Array) {
+  const _easycom_my_search2 = common_vendor.resolveComponent("my-search");
+  _easycom_my_search2();
+}
+const _easycom_my_search = () => "../../components/my-search/my-search.js";
+if (!Math) {
+  _easycom_my_search();
+}
 const _sfc_main = {
   __name: "cate",
   setup(__props) {
@@ -10,7 +18,7 @@ const _sfc_main = {
     const scrollTop = common_vendor.ref(0);
     common_vendor.onLoad(() => {
       const sysInfo = common_vendor.index.getSystemInfoSync();
-      wh.value = sysInfo.windowHeight;
+      wh.value = sysInfo.windowHeight - 50;
       getCateList();
     });
     async function getCateList() {
@@ -32,9 +40,15 @@ const _sfc_main = {
         url: "/subpkg/goods_list/goods_list?cid=" + item3.cat_id
       });
     }
+    function gotoSearch() {
+      common_vendor.index.navigateTo({
+        url: "/subpkg/search/search"
+      });
+    }
     return (_ctx, _cache) => {
       return {
-        a: common_vendor.f(cateList.value, (item, i, i0) => {
+        a: common_vendor.o(gotoSearch),
+        b: common_vendor.f(cateList.value, (item, i, i0) => {
           return {
             a: common_vendor.t(item.cat_name),
             b: common_vendor.n(i === active.value ? "active" : ""),
@@ -42,8 +56,8 @@ const _sfc_main = {
             d: i
           };
         }),
-        b: wh.value + "px",
-        c: common_vendor.f(cateLevel2.value, (item2, i2, i0) => {
+        c: wh.value + "px",
+        d: common_vendor.f(cateLevel2.value, (item2, i2, i0) => {
           return {
             a: common_vendor.t(item2.cat_name),
             b: common_vendor.f(item2.children, (item3, i3, i1) => {
@@ -56,8 +70,8 @@ const _sfc_main = {
             c: i2
           };
         }),
-        d: wh.value + "px",
-        e: scrollTop.value
+        e: wh.value + "px",
+        f: scrollTop.value
       };
     };
   }

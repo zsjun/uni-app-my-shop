@@ -1,5 +1,7 @@
 {
   "navigationBarTitleText": "乐购",
   "enablePullDownRefresh": false,
-  "usingComponents": {}
+  "usingComponents": {
+    "my-search": "../../components/my-search/my-search"
+  }
 }

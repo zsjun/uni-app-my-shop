@@ -1,5 +1,11 @@
 /* 水平间距 */
 /* 水平间距 */
+.search-box {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
 .swiper {
   height: 330rpx;
 }

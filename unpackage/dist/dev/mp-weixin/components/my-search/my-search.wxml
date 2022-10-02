@@ -1,0 +1,1 @@
+<view class="my-search-container" style="{{'background-color:' + d}}"><view class="my-search-box" style="{{'border-radius:' + b}}" bindtap="{{c}}"><uni-icons wx:if="{{a}}" u-i="27d45350-0" bind:__l="__l" u-p="{{a}}"></uni-icons><text class="placeholder">搜索</text></view></view>

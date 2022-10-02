@@ -1,5 +1,7 @@
 {
   "navigationBarTitleText": "",
   "enablePullDownRefresh": false,
-  "usingComponents": {}
+  "usingComponents": {
+    "my-search": "../../components/my-search/my-search"
+  }
 }
