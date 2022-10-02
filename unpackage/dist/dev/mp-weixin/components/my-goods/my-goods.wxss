@@ -7,6 +7,9 @@
 }
 .goods-item .goods-item-left {
   margin-right: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .goods-item .goods-item-left .goods-pic {
   width: 100px;
@@ -15,11 +18,17 @@
 }
 .goods-item .goods-item-right {
   display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: space-between;
 }
 .goods-item .goods-item-right .goods-name {
   font-size: 13px;
+}
+.goods-item .goods-item-right .goods-info-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .goods-item .goods-item-right .goods-price {
   font-size: 16px;

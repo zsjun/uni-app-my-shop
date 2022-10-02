@@ -9,6 +9,9 @@ function badgeMix() {
   common_vendor.onShow(() => {
     setBadge();
   });
+  common_vendor.watch(total, () => {
+    setBadge();
+  });
   function setBadge() {
     common_vendor.index.setTabBarBadge({
       index: 2,

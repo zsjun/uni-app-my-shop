@@ -1,7 +1,9 @@
-export default {
-  // 开启命名空间
-  namespaced: true,
+// Pinia Store
+import {
+  defineStore
+} from 'pinia'
 
+export const useUserStore = defineStore("m_user", {
   // 数据
   state: () => ({
     address: JSON.parse(uni.getStorageSync('address') || '{}'),
@@ -11,46 +13,42 @@ export default {
     // 重定向的 Object 对象
     redirectInfo: null
   }),
-
-  // 方法
-  mutations: {
-    // 更新收货地址
-    updateAddress(state, address) {
-      state.address = address
-
-      this.commit('m_user/saveAddressToStorage')
-    },
-    // 持久化存储 address
-    saveAddressToStorage(state) {
-      uni.setStorageSync('address', JSON.stringify(state.address))
-    },
-    updateUserInfo(state, userinfo) {
-      state.userinfo = userinfo
-
-      this.commit('m_user/saveUserInfoToStorage')
-    },
-    saveUserInfoToStorage(state) {
-      uni.setStorageSync('userinfo', JSON.stringify(state.userinfo))
-    },
-    updateToken(state, token) {
-      state.token = token
-      this.commit('m_user/saveTokenToStorage')
-    },
-    saveTokenToStorage(state) {
-      uni.setStorageSync('token', state.token)
-    },
-    updateRedirectInfo(state, info) {
-      state.redirectInfo = info
-      console.log(state.redirectInfo)
-    }
-  },
-
   getters: {
     // 收货地址
     addstr(state) {
       if (!state.address.provinceName) return ''
-
-      return state.address.provinceName + state.address.cityName + state.address.countyName + state.address.detailInfo
+      return state.address.provinceName + state.address.cityName + state.address.countyName + state.address
+        .detailInfo
+    }
+  },
+  // 方法
+  actions: {
+    // 更新收货地址
+    updateAddress(address) {
+      this.address = address
+      this.saveAddressToStorage()
+    },
+    // 持久化存储 address
+    saveAddressToStorage() {
+      uni.setStorageSync('address', JSON.stringify(this.address))
+    },
+    updateUserInfo(userinfo) {
+      this.userinfo = userinfo
+      this.saveUserInfoToStorage()
+    },
+    saveUserInfoToStorage() {
+      uni.setStorageSync('userinfo', JSON.stringify(this.userinfo))
+    },
+    updateToken(token) {
+      this.token = token
+      this.saveTokenToStorage()
+    },
+    saveTokenToStorage() {
+      uni.setStorageSync('token', this.token)
+    },
+    updateRedirectInfo(info) {
+      this.redirectInfo = info
+      console.log(this.redirectInfo)
     }
   }
-}
+})

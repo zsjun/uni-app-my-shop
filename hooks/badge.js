@@ -1,6 +1,6 @@
-// import {
-//   ref
-// } from "vue"
+import {
+  watch
+} from "vue"
 import {
   onShow,
 } from '@dcloudio/uni-app'
@@ -18,6 +18,10 @@ export default function() {
   } = storeToRefs(store)
   onShow(() => {
     // 在页面刚展示的时候，设置数字徽标
+    setBadge()
+  })
+  watch(total, () => {
+    // 调用 methods 中的 setBadge 方法，重新为 tabBar 的数字徽章赋值
     setBadge()
   })
 

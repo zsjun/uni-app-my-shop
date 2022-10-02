@@ -1,4 +1,6 @@
 {
   "component": true,
-  "usingComponents": {}
+  "usingComponents": {
+    "uni-number-box": "../../uni_modules/uni-number-box/components/uni-number-box/uni-number-box"
+  }
 }
