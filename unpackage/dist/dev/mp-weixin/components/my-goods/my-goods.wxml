@@ -1,0 +1,1 @@
+<view class="goods-item"><view class="goods-item-left"><image src="{{a}}" class="goods-pic"></image></view><view class="goods-item-right"><view class="goods-name">{{b}}</view><view class="goods-info-box"><view class="goods-price">￥{{c}}</view></view></view></view>
