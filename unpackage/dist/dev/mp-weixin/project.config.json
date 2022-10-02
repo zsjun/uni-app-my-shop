@@ -20,7 +20,7 @@
   "compileType": "miniprogram",
   "libVersion": "2.26.1",
   "appid": "wxb85f823075100a64",
-  "projectname": "my-shop",
+  "projectname": "乐购",
   "condition": {
     "search": {
       "current": -1,
