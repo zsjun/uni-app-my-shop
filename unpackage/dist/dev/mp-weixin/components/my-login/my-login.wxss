@@ -1,0 +1,34 @@
+/* 水平间距 */
+/* 水平间距 */
+.login-container {
+  height: 750rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f8f8;
+  position: relative;
+  overflow: hidden;
+}
+.login-container::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 40px;
+  left: 0;
+  bottom: 0;
+  background-color: white;
+  border-radius: 100%;
+  transform: translateY(50%);
+}
+.login-container .btn-login {
+  width: 90%;
+  border-radius: 100px;
+  margin: 15px 0;
+  background-color: #c00000;
+}
+.login-container .tips-text {
+  font-size: 12px;
+  color: gray;
+}

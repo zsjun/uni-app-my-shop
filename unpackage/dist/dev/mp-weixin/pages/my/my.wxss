@@ -1,0 +1,6 @@
+/* 水平间距 */
+/* 水平间距 */
+page,
+.my-container {
+  height: 100%;
+}

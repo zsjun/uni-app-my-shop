@@ -58,7 +58,6 @@
     total
   } = storeToRefs(store)
   badgeMix()
-  console.log(cart.value)
 
   const options = ref([{
     text: '删除', // 显示的文本内容

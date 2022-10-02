@@ -30,6 +30,11 @@ common_vendor.$http.beforeRequest = function(options) {
   common_vendor.index.showLoading({
     title: "\u6570\u636E\u52A0\u8F7D\u4E2D..."
   });
+  if (options.url.indexOf("/my/") !== -1) {
+    options.header = {
+      Authorization: store.token
+    };
+  }
 };
 common_vendor.$http.afterRequest = function(res) {
   common_vendor.index.hideLoading();

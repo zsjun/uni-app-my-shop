@@ -29,7 +29,6 @@ const _sfc_main = {
       total
     } = common_vendor.storeToRefs(store);
     hooks_badge.badgeMix();
-    console.log(cart.value);
     const options = common_vendor.ref([{
       text: "\u5220\u9664",
       style: {
