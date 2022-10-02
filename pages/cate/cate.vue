@@ -36,6 +36,8 @@
     reactive,
     ref
   } from "vue"
+  import badgeMix from "../../hooks/badge.js"
+  badgeMix()
   // 窗口的可用高度=屏幕高度 - navigationBar高度 - tabBar 高度 
   const wh = ref(0)
   // 分类数据列表 

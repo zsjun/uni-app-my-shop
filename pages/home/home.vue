@@ -56,6 +56,8 @@
     reactive,
     ref
   } from "vue"
+  import badgeMix from "../../hooks/badge.js"
+  badgeMix()
 
   // 1. 轮播图的数据列表，默认为空数组
   const swiperList = ref([])

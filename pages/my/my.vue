@@ -4,14 +4,9 @@
   </view>
 </template>
 
-<script>
-  export default {
-    data() {
-      return {
-
-      };
-    }
-  }
+<script setup>
+  import badgeMix from "../../hooks/badge.js"
+  badgeMix()
 </script>
 
 <style lang="scss">

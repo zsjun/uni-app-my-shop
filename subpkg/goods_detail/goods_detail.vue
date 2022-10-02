@@ -22,7 +22,7 @@
         </view>
       </view>
       <!-- 运费 -->
-      <view class="yf">快递：免运费</view>
+      <view class="yf">快递：免运费 -- {{cart.length}}</view>
     </view>
 
     <rich-text :nodes="goods_info.goods_introduce"></rich-text>
@@ -43,13 +43,28 @@
 <script setup>
   import {
     reactive,
-    ref
+    ref,
+    watch
   } from "vue"
   import {
     onLoad,
     onReachBottom,
     onPullDownRefresh
   } from '@dcloudio/uni-app'
+  import {
+    storeToRefs
+  } from 'pinia'
+
+  import {
+    useCartStore
+  } from '../../stores/cart'
+
+  const store = useCartStore()
+  const {
+    cart,
+    name,
+    total
+  } = storeToRefs(store)
   // 商品详情对象
   const goods_info = reactive({})
   // 左侧按钮组的配置对象
@@ -59,7 +74,7 @@
   }, {
     icon: 'cart',
     text: '购物车',
-    info: 2
+    info: total.value
   }])
 
   // 右侧按钮组的配置对象
@@ -74,11 +89,23 @@
       color: '#fff'
     }
   ])
-  onLoad(options => {
+  onLoad(params => {
     // 获取商品 Id
-    const goods_id = options.goods_id
+    const goods_id = params.goods_id
     // 调用请求商品详情数据的方法
     getGoodsDetail(goods_id)
+  })
+  watch(total, (oldVal, newVal) => {
+    // 2. 通过数组的 find() 方法，找到购物车按钮的配置对象
+    const findResult = options.value.find((x) => x.text === '购物车')
+
+    if (findResult) {
+      // 3. 动态为购物车按钮的 info 属性赋值
+      findResult.info = newVal
+    }
+  }, {
+    // immediate 属性用来声明此侦听器，是否在页面初次加载完毕后立即调用
+    immediate: true
   })
   // 定义请求商品详情数据的方法
   async function getGoodsDetail(goods_id) {
@@ -112,6 +139,23 @@
       uni.switchTab({
         url: '/pages/cart/cart'
       })
+    }
+  }
+
+  function buttonClick(e) {
+    if (e.content.text === '加入购物车') {
+      // 组织商品的信息对象
+      // { goods_id, goods_name, goods_price, goods_count, goods_small_logo, goods_state }
+      const goods = {
+        goods_id: goods_info.goods_id,
+        goods_name: goods_info.goods_name,
+        goods_price: goods_info.goods_price,
+        goods_count: 1,
+        goods_small_logo: goods_info.goods_small_logo,
+        goods_state: true
+      }
+      // 调用 addToCart 方法
+      store.addToCart(goods)
     }
   }
 </script>
@@ -173,5 +217,10 @@
 
   .goods-detail-container {
     padding-bottom: 50px;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 </style>

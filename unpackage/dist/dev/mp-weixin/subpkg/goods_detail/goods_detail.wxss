@@ -48,3 +48,7 @@ swiper image {
 .goods-detail-container {
   padding-bottom: 50px;
 }
+.goods-detail-container img {
+  width: 100%;
+  height: 100%;
+}

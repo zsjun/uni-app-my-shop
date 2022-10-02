@@ -1,5 +1,7 @@
 "use strict";
 var common_vendor = require("../../common/vendor.js");
+var hooks_badge = require("../../hooks/badge.js");
+require("../../stores/cart.js");
 if (!Array) {
   const _easycom_my_search2 = common_vendor.resolveComponent("my-search");
   _easycom_my_search2();
@@ -11,6 +13,7 @@ if (!Math) {
 const _sfc_main = {
   __name: "home",
   setup(__props) {
+    hooks_badge.badgeMix();
     const swiperList = common_vendor.ref([]);
     const navList = common_vendor.ref([]);
     const floorList = common_vendor.ref([]);

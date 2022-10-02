@@ -42,7 +42,9 @@ common_vendor.index.$showMsg = function(title = "\u6570\u636E\u52A0\u8F7D\u5931\
   });
 };
 function createApp() {
+  const pinia = common_vendor.createPinia();
   const app = common_vendor.createSSRApp(App);
+  app.use(pinia);
   return {
     app
   };
