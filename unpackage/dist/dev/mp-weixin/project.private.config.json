@@ -20,6 +20,13 @@
           "query": "goods_id=395",
           "launchMode": "default",
           "scene": null
+        },
+        {
+          "name": "pages/cart/cart",
+          "pathName": "pages/cart/cart",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
         }
       ]
     }
