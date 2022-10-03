@@ -1,19 +1,20 @@
 "use strict";
 var common_vendor = require("../../common/vendor.js");
 var stores_cart = require("../../stores/cart.js");
+var stores_user = require("../../stores/user.js");
 const _sfc_main = {
   __name: "my-settle",
   setup(__props) {
+    const useStore = stores_user.useUserStore();
     const store = stores_cart.useCartStore();
     const {
-      checkedCount,
-      addstr,
-      token,
-      total
+      checkedCount
     } = common_vendor.storeToRefs(store);
+    common_vendor.storeToRefs(useStore);
     const seconds = common_vendor.ref(3);
+    let timeId = null;
     const isFullCheck = common_vendor.computed$1(() => {
-      return total === checkedCount;
+      return store.total === checkedCount.value;
     });
     function changeAllState() {
       store.updateAllGoodsState(!isFullCheck);
@@ -21,10 +22,11 @@ const _sfc_main = {
     function settlement() {
       if (!checkedCount)
         return common_vendor.index.$showMsg("\u8BF7\u9009\u62E9\u8981\u7ED3\u7B97\u7684\u5546\u54C1\uFF01");
-      if (!addstr)
-        return common_vendor.index.$showMsg("\u8BF7\u9009\u62E9\u6536\u8D27\u5730\u5740\uFF01");
-      if (!token)
+      console.log(122, useStore.token);
+      if (!useStore.token)
         return delayNavigate();
+      if (!store.addstr)
+        return common_vendor.index.$showMsg("\u8BF7\u9009\u62E9\u6536\u8D27\u5730\u5740\uFF01");
       payOrder();
     }
     function showTips(n) {
@@ -38,14 +40,14 @@ const _sfc_main = {
     function delayNavigate() {
       seconds.value = 3;
       showTips(seconds.value);
-      setInterval(() => {
+      timeId = setInterval(() => {
         seconds.value--;
         if (seconds.value <= 0) {
-          clearInterval(timerId);
+          clearInterval(timeId);
           common_vendor.index.switchTab({
             url: "/pages/my/my",
             success: () => {
-              store.updateRedirectInfo({
+              useStore.updateRedirectInfo({
                 openType: "switchTab",
                 from: "/pages/cart/cart"
               });

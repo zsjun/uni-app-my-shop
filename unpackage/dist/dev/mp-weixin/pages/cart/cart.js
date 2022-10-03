@@ -1,6 +1,7 @@
 "use strict";
 var common_vendor = require("../../common/vendor.js");
 var stores_cart = require("../../stores/cart.js");
+var stores_user = require("../../stores/user.js");
 var hooks_badge = require("../../hooks/badge.js");
 if (!Array) {
   const _easycom_my_address2 = common_vendor.resolveComponent("my-address");
@@ -24,6 +25,7 @@ const _sfc_main = {
   __name: "cart",
   setup(__props) {
     const store = stores_cart.useCartStore();
+    stores_user.useUserStore();
     const {
       cart,
       total

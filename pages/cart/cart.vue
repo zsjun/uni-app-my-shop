@@ -50,14 +50,22 @@
   import {
     useCartStore
   } from '../../stores/cart'
+  import {
+    useUserStore
+  } from "../../stores/user.js"
   import badgeMix from "../../hooks/badge.js"
 
   const store = useCartStore()
+  const useStore = useUserStore()
   const {
     cart,
     total
   } = storeToRefs(store)
+  // const {
+  //   token
+  // } = storeToRefs(useStore)
   badgeMix()
+
 
   const options = ref([{
     text: '删除', // 显示的文本内容

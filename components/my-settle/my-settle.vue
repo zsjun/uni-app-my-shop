@@ -27,19 +27,24 @@
     computed,
     ref
   } from "vue";
+  import {
+    useUserStore
+  } from "../../stores/user.js"
 
+  const useStore = useUserStore()
   const store = useCartStore()
+
   const {
     checkedCount,
-    addstr,
-    token,
-    total
   } = storeToRefs(store)
+  const {
+    token
+  } = storeToRefs(useStore)
   // 倒计时的秒数
   const seconds = ref(3)
   let timeId = null
   const isFullCheck = computed(() => {
-    return total === checkedCount
+    return store.total === checkedCount.value
   })
   // label 的点击事件处理函数
   function changeAllState() {
@@ -51,14 +56,13 @@
   function settlement() {
     // 1. 先判断是否勾选了要结算的商品
     if (!checkedCount) return uni.$showMsg('请选择要结算的商品！')
-
-    // 2. 再判断用户是否选择了收货地址
-    if (!addstr) return uni.$showMsg('请选择收货地址！')
-
     // 3. 最后判断用户是否登录了
     // 3. 最后判断用户是否登录了，如果没有登录，则调用 delayNavigate() 进行倒计时的导航跳转
     // if (!this.token) return uni.$showMsg('请先登录！')
-    if (!token) return delayNavigate()
+    console.log(122, useStore.token)
+    if (!useStore.token) return delayNavigate()
+    // 2. 再判断用户是否选择了收货地址
+    if (!store.addstr) return uni.$showMsg('请选择收货地址！')
     // 4. 实现微信支付功能
     payOrder()
   }
@@ -88,7 +92,7 @@
       seconds.value--
       if (seconds.value <= 0) {
         // 2.1 清除定时器
-        clearInterval(timerId)
+        clearInterval(timeId)
 
         // 2.2 跳转到 my 页面
         uni.switchTab({
@@ -96,7 +100,7 @@
           // 页面跳转成功之后的回调函数
           success: () => {
             // 调用 vuex 的 updateRedirectInfo 方法，把跳转信息存储到 Store 中
-            store.updateRedirectInfo({
+            useStore.updateRedirectInfo({
               // 跳转的方式
               openType: 'switchTab',
               // 从哪个页面跳转过去的
