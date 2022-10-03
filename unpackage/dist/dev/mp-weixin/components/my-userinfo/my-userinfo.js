@@ -13,21 +13,28 @@ const _sfc_main = {
   __name: "my-userinfo",
   setup(__props) {
     const store = stores_user.useUserStore();
-    async function logout() {
-      const [err, succ] = await common_vendor.index.showModal({
+    const {
+      userinfo
+    } = common_vendor.storeToRefs(store);
+    function logout() {
+      common_vendor.index.showModal({
         title: "\u63D0\u793A",
-        content: "\u786E\u8BA4\u9000\u51FA\u767B\u5F55\u5417\uFF1F"
-      }).catch((err2) => err2);
-      if (succ && succ.confirm) {
-        store.updateUserInfo({});
-        store.updateToken("");
-        store.updateAddress({});
-      }
+        content: "\u786E\u8BA4\u9000\u51FA\u767B\u5F55\u5417\uFF1F",
+        success: function(res) {
+          if (res.confirm) {
+            store.updateUserInfo({});
+            store.updateToken("");
+            store.updateAddress({});
+          } else if (res.cancel) {
+            console.log("\u7528\u6237\u70B9\u51FB\u53D6\u6D88");
+          }
+        }
+      });
     }
     return (_ctx, _cache) => {
       return {
-        a: _ctx.userinfo.avatarUrl,
-        b: common_vendor.t(_ctx.userinfo.nickName),
+        a: common_vendor.unref(userinfo).avatarUrl,
+        b: common_vendor.t(common_vendor.unref(userinfo).nickName),
         c: common_vendor.p({
           type: "arrowright",
           size: "15"
@@ -40,11 +47,7 @@ const _sfc_main = {
           type: "arrowright",
           size: "15"
         }),
-        f: common_vendor.p({
-          type: "arrowright",
-          size: "15"
-        }),
-        g: common_vendor.o(logout)
+        f: common_vendor.o(logout)
       };
     };
   }

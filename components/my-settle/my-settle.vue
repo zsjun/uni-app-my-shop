@@ -24,14 +24,16 @@
     storeToRefs
   } from 'pinia'
   import {
-    computed
+    computed,
+    ref
   } from "vue";
 
   const store = useCartStore()
   const {
     checkedCount,
     addstr,
-    token
+    token,
+    total
   } = storeToRefs(store)
   // 倒计时的秒数
   const seconds = ref(3)

@@ -34,6 +34,7 @@ export const useUserStore = defineStore("m_user", {
     },
     updateUserInfo(userinfo) {
       this.userinfo = userinfo
+      console.log(99999, userinfo)
       this.saveUserInfoToStorage()
     },
     saveUserInfoToStorage() {
@@ -41,6 +42,7 @@ export const useUserStore = defineStore("m_user", {
     },
     updateToken(token) {
       this.token = token
+      console.log(123456, token)
       this.saveTokenToStorage()
     },
     saveTokenToStorage() {

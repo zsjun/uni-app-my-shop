@@ -1,20 +1,16 @@
 <template>
   <view class="my-userinfo-container">
-
-    <!-- 头像昵称区域 -->
+    <!-- 头像和昵称区域 -->
     <view class="top-box">
-      <!-- <image src="" class="avatar"></image>
-      <view class="nickname">xxx</view> -->
       <image :src="userinfo.avatarUrl" class="avatar"></image>
       <view class="nickname">{{userinfo.nickName}}</view>
     </view>
-    <!-- 面板的列表区域 -->
+
+    <!-- 面板区域 -->
     <view class="panel-list">
-      <!-- 第一个面板 -->
+      <!-- 第1个面板 -->
       <view class="panel">
-        <!-- panel 的主体区域 -->
         <view class="panel-body">
-          <!-- panel 的 item 项 -->
           <view class="panel-item">
             <text>8</text>
             <text>收藏的店铺</text>
@@ -34,13 +30,12 @@
         </view>
       </view>
 
-      <!-- 第二个面板 -->
+      <!-- 第2个面板 -->
       <view class="panel">
-        <!-- 面板的标题 -->
-        <view class="panel-title">我的订单</view>
-        <!-- 面板的主体 -->
+        <view class="panel-title">
+          我的订单
+        </view>
         <view class="panel-body">
-          <!-- 面板主体中的 item 项 -->
           <view class="panel-item">
             <image src="/static/my-icons/icon1.png" class="icon"></image>
             <text>待付款</text>
@@ -60,7 +55,7 @@
         </view>
       </view>
 
-      <!-- 第三个面板 -->
+      <!-- 第3个面板 -->
       <view class="panel">
         <view class="panel-list-item">
           <text>收货地址</text>
@@ -70,16 +65,12 @@
           <text>联系客服</text>
           <uni-icons type="arrowright" size="15"></uni-icons>
         </view>
-        <view class="panel-list-item">
+        <view class="panel-list-item" @click="logout">
           <text>退出登录</text>
           <uni-icons type="arrowright" size="15"></uni-icons>
         </view>
       </view>
     </view>
-  </view>
-  <view class="panel-list-item" @click="logout">
-    <text>退出登录</text>
-    <uni-icons type="arrowright" size="15"></uni-icons>
   </view>
 </template>
 
@@ -94,21 +85,27 @@
 
   const store = useUserStore()
 
+  const {
+    userinfo
+  } = storeToRefs(store)
   // 退出登录
-  async function logout() {
+  function logout() {
     // 询问用户是否退出登录
-    const [err, succ] = await uni.showModal({
+    uni.showModal({
       title: '提示',
-      content: '确认退出登录吗？'
-    }).catch(err => err)
-
-    if (succ && succ.confirm) {
-      // 用户确认了退出登录的操作
-      // 需要清空 vuex 中的 userinfo、token 和 address
-      store.updateUserInfo({})
-      store.updateToken('')
-      store.updateAddress({})
-    }
+      content: '确认退出登录吗？',
+      success: function(res) {
+        if (res.confirm) {
+          // 用户确认了退出登录的操作
+          // 需要清空 vuex 中的 userinfo、token 和 address
+          store.updateUserInfo({})
+          store.updateToken('')
+          store.updateAddress({})
+        } else if (res.cancel) {
+          console.log('用户点击取消');
+        }
+      }
+    })
   }
 </script>
 

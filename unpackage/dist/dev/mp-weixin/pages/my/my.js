@@ -21,6 +21,7 @@ const _sfc_main = {
       token
     } = common_vendor.storeToRefs(store);
     hooks_badge.badgeMix();
+    console.log(999, token);
     return (_ctx, _cache) => {
       return common_vendor.e({
         a: !common_vendor.unref(token)

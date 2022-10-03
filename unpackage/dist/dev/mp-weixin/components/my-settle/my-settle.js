@@ -8,9 +8,10 @@ const _sfc_main = {
     const {
       checkedCount,
       addstr,
-      token
+      token,
+      total
     } = common_vendor.storeToRefs(store);
-    const seconds = ref(3);
+    const seconds = common_vendor.ref(3);
     const isFullCheck = common_vendor.computed$1(() => {
       return total === checkedCount;
     });

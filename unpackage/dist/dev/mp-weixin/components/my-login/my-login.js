@@ -17,30 +17,50 @@ const _sfc_main = {
       redirectInfo
     } = common_vendor.storeToRefs(store);
     function getUserInfo(e) {
-      if (e.detail.errMsg === "getUserInfo:fail auth deny")
-        return common_vendor.index.$showMsg("\u60A8\u53D6\u6D88\u4E86\u767B\u5F55\u6388\u6743\uFF01");
-      console.log(e.detail.userInfo);
-      store.updateUserInfo(e.detail.userInfo);
-      getToken(e.detail);
+      common_vendor.index.getUserProfile({
+        desc: "\u4F60\u7684\u6388\u6743\u4FE1\u606F",
+        success: (res) => {
+          store.updateUserInfo(res.userInfo);
+          getToken(res);
+        },
+        fail: (res) => {
+          return common_vendor.index.$showMsg("\u60A8\u53D6\u6D88\u4E86\u767B\u5F55\u6388\u6743");
+        }
+      });
     }
     async function getToken(info) {
-      const [err, res] = await common_vendor.index.login().catch((err2) => err2);
-      if (err || res.errMsg !== "login:ok")
-        return common_vendor.index.$showError("\u767B\u5F55\u5931\u8D25\uFF01");
-      const query = {
-        code: res.code,
-        encryptedData: info.encryptedData,
-        iv: info.iv,
-        rawData: info.rawData,
-        signature: info.signature
-      };
-      const {
-        data: loginResult
-      } = await common_vendor.index.$http.post("/api/public/v1/users/wxlogin", query);
-      if (loginResult.meta.status !== 200)
-        return common_vendor.index.$showMsg("\u767B\u5F55\u5931\u8D25\uFF01");
-      store.updateToken(loginResult.message.token);
-      navigateBack();
+      const res = {};
+      common_vendor.index.login({
+        provider: "weixin",
+        onlyAuthorize: true,
+        success: async function(loginRes) {
+          res.code = loginRes.code;
+          const query = {
+            code: res.code,
+            encryptedData: info.encryptedData,
+            iv: info.iv,
+            rawData: info.rawData,
+            signature: info.signature
+          };
+          let loginResult = {
+            message: {
+              token: "zsjzsjzsj"
+            }
+          };
+          try {
+            const {
+              data
+            } = await common_vendor.index.$http.post("/api/public/v1/users/wxlogin", query);
+          } catch (err) {
+            console.log(1111, err);
+          }
+          store.updateToken(loginResult.message.token);
+          navigateBack();
+        },
+        fail: function(err) {
+          return common_vendor.index.$showError("uni.login \u767B\u5F55\u5931\u8D25\uFF01");
+        }
+      });
     }
     function navigateBack() {
       if (redirectInfo && redirectInfo.openType === "switchTab") {

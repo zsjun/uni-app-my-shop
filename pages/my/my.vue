@@ -25,6 +25,7 @@
     token
   } = storeToRefs(store)
   badgeMix()
+  console.log(999, token)
 </script>
 
 <style lang="scss">
