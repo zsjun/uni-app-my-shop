@@ -34,9 +34,10 @@
   const useStore = useUserStore()
   const store = useCartStore()
 
-  const {
-    checkedCount,
-  } = storeToRefs(store)
+  // const {
+  //   checkedCount,
+
+  // } = storeToRefs(store)
   const {
     token
   } = storeToRefs(useStore)
@@ -44,7 +45,7 @@
   const seconds = ref(3)
   let timeId = null
   const isFullCheck = computed(() => {
-    return store.total === checkedCount.value
+    return store.total === store.checkedCount
   })
   // label 的点击事件处理函数
   function changeAllState() {
@@ -55,14 +56,13 @@
   // 点击了结算按钮
   function settlement() {
     // 1. 先判断是否勾选了要结算的商品
-    if (!checkedCount) return uni.$showMsg('请选择要结算的商品！')
+    if (!store.checkedCount) return uni.$showMsg('请选择要结算的商品！')
     // 3. 最后判断用户是否登录了
     // 3. 最后判断用户是否登录了，如果没有登录，则调用 delayNavigate() 进行倒计时的导航跳转
     // if (!this.token) return uni.$showMsg('请先登录！')
-    console.log(122, useStore.token)
     if (!useStore.token) return delayNavigate()
     // 2. 再判断用户是否选择了收货地址
-    if (!store.addstr) return uni.$showMsg('请选择收货地址！')
+    // if (!store.addstr) return uni.$showMsg('请选择收货地址！')
     // 4. 实现微信支付功能
     payOrder()
   }
@@ -125,8 +125,8 @@
       // order_price: this.checkedGoodsAmount,
       // 写死订单总价为 1 分钱
       order_price: 0.01,
-      consignee_addr: addstr,
-      goods: cart.filter(x => x.goods_state).map(x => ({
+      consignee_addr: store.addstr,
+      goods: store.cart.filter(x => x.goods_state).map(x => ({
         goods_id: x.goods_id,
         goods_number: x.goods_count,
         goods_price: x.goods_price
@@ -136,36 +136,49 @@
     const {
       data: res
     } = await uni.$http.post('/api/public/v1/my/orders/create', orderInfo)
-    if (res.meta.status !== 200) return uni.$showMsg('创建订单失败！')
+    // 因为token是模拟的，所以模拟一个订单编号
+    // if (res.meta.status !== 200) return uni.$showMsg('创建订单失败！')
     // 1.3 得到服务器响应的“订单编号”
-    const orderNumber = res.message.order_number
+    let orderNumber = "1122222222222"
+    if (res && res.message) {
+      orderNumber = res.message.order_number
+    }
 
     // 2. 订单预支付
     // 2. 订单预支付
     // 2.1 发起请求获取订单的支付信息
-    const {
-      data: res2
-    } = await uni.$http.post('/api/public/v1/my/orders/req_unifiedorder', {
-      order_number: orderNumber
-    })
     // 2.2 预付订单生成失败
-    if (res2.meta.status !== 200) return uni.$showError('预付订单生成失败！')
+    //  if (res2.meta.status !== 200) return uni.$showError('预付订单生成失败！')
     // 2.3 得到订单支付相关的必要参数
-    const payInfo = res2.message.pay
+    let payInfo = {}
+    try {
+      const {
+        data: res2
+      } = await uni.$http.post('/api/public/v1/my/orders/req_unifiedorder', {
+        order_number: orderNumber
+      })
+      if (res2 && res2.message) {
+        payInfo = res2.message.pay
+      }
+    } catch (err) {
+      console.log(123, err)
+    }
+
+
 
     // 3. 发起微信支付
     // 3.1 调用 uni.requestPayment() 发起微信支付
-    const [err, succ] = await uni.requestPayment(payInfo)
+    // const [err, succ] = await uni.requestPayment(payInfo)
     // 3.2 未完成支付
-    if (err) return uni.$showMsg('订单未支付！')
+    // if (err) return uni.$showMsg('订单未支付！')
     // 3.3 完成了支付，进一步查询支付的结果
     const {
       data: res3
     } = await uni.$http.post('/api/public/v1/my/orders/chkOrder', {
-      order_number: orderNumber
+      order_number: orderNumber || "22222222"
     })
     // 3.4 检测到订单未支付
-    if (res3.meta.status !== 200) return uni.$showMsg('订单未支付！')
+    // if (res3.meta.status !== 200) return uni.$showMsg('订单未支付！')
     // 3.5 检测到订单支付完成
     uni.showToast({
       title: '支付完成！',

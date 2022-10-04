@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports[Symbol.toStringTag] = "Module";
 var common_vendor = require("./common/vendor.js");
+var stores_user = require("./stores/user.js");
 if (!Math) {
   "./pages/home/home.js";
   "./pages/cate/cate.js";
@@ -26,16 +27,6 @@ const _sfc_main = {
 var App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "/Users/zoushijun/work/my-shop/App.vue"]]);
 common_vendor.index.$http = common_vendor.$http;
 common_vendor.$http.baseUrl = "https://api-ugo-web.itheima.net";
-common_vendor.$http.beforeRequest = function(options) {
-  common_vendor.index.showLoading({
-    title: "\u6570\u636E\u52A0\u8F7D\u4E2D..."
-  });
-  if (options.url.indexOf("/my/") !== -1) {
-    options.header = {
-      Authorization: store.token
-    };
-  }
-};
 common_vendor.$http.afterRequest = function(res) {
   common_vendor.index.hideLoading();
 };
@@ -50,6 +41,17 @@ function createApp() {
   const pinia = common_vendor.createPinia();
   const app = common_vendor.createSSRApp(App);
   app.use(pinia);
+  const store = stores_user.useUserStore();
+  common_vendor.$http.beforeRequest = function(options) {
+    common_vendor.index.showLoading({
+      title: "\u6570\u636E\u52A0\u8F7D\u4E2D..."
+    });
+    if (options.url.indexOf("/my/") !== -1) {
+      options.header = {
+        Authorization: store.token
+      };
+    }
+  };
   return {
     app
   };

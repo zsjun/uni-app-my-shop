@@ -13,9 +13,6 @@ const _sfc_main = {
   __name: "my-login",
   setup(__props) {
     const store = stores_user.useUserStore();
-    const {
-      redirectInfo
-    } = common_vendor.storeToRefs(store);
     function getUserInfo(e) {
       common_vendor.index.getUserProfile({
         desc: "\u4F60\u7684\u6388\u6743\u4FE1\u606F",
@@ -63,9 +60,9 @@ const _sfc_main = {
       });
     }
     function navigateBack() {
-      if (redirectInfo && redirectInfo.openType === "switchTab") {
+      if (store.redirectInfo && store.redirectInfo.openType === "switchTab") {
         common_vendor.index.switchTab({
-          url: redirectInfo.from,
+          url: store.redirectInfo.from,
           complete: () => {
             store.updateRedirectInfo(null);
           }

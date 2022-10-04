@@ -7,26 +7,20 @@ const _sfc_main = {
   setup(__props) {
     const useStore = stores_user.useUserStore();
     const store = stores_cart.useCartStore();
-    const {
-      checkedCount
-    } = common_vendor.storeToRefs(store);
     common_vendor.storeToRefs(useStore);
     const seconds = common_vendor.ref(3);
     let timeId = null;
     const isFullCheck = common_vendor.computed$1(() => {
-      return store.total === checkedCount.value;
+      return store.total === store.checkedCount;
     });
     function changeAllState() {
       store.updateAllGoodsState(!isFullCheck);
     }
     function settlement() {
-      if (!checkedCount)
+      if (!store.checkedCount)
         return common_vendor.index.$showMsg("\u8BF7\u9009\u62E9\u8981\u7ED3\u7B97\u7684\u5546\u54C1\uFF01");
-      console.log(122, useStore.token);
       if (!useStore.token)
         return delayNavigate();
-      if (!store.addstr)
-        return common_vendor.index.$showMsg("\u8BF7\u9009\u62E9\u6536\u8D27\u5730\u5740\uFF01");
       payOrder();
     }
     function showTips(n) {
@@ -61,8 +55,8 @@ const _sfc_main = {
     async function payOrder() {
       const orderInfo = {
         order_price: 0.01,
-        consignee_addr: addstr,
-        goods: cart.filter((x) => x.goods_state).map((x) => ({
+        consignee_addr: store.addstr,
+        goods: store.cart.filter((x) => x.goods_state).map((x) => ({
           goods_id: x.goods_id,
           goods_number: x.goods_count,
           goods_price: x.goods_price
@@ -71,27 +65,26 @@ const _sfc_main = {
       const {
         data: res
       } = await common_vendor.index.$http.post("/api/public/v1/my/orders/create", orderInfo);
-      if (res.meta.status !== 200)
-        return common_vendor.index.$showMsg("\u521B\u5EFA\u8BA2\u5355\u5931\u8D25\uFF01");
-      const orderNumber = res.message.order_number;
-      const {
-        data: res2
-      } = await common_vendor.index.$http.post("/api/public/v1/my/orders/req_unifiedorder", {
-        order_number: orderNumber
+      let orderNumber = "1122222222222";
+      if (res && res.message) {
+        orderNumber = res.message.order_number;
+      }
+      let payInfo = {};
+      try {
+        const {
+          data: res2
+        } = await common_vendor.index.$http.post("/api/public/v1/my/orders/req_unifiedorder", {
+          order_number: orderNumber
+        });
+        if (res2 && res2.message) {
+          payInfo = res2.message.pay;
+        }
+      } catch (err) {
+        console.log(123, err);
+      }
+      await common_vendor.index.$http.post("/api/public/v1/my/orders/chkOrder", {
+        order_number: orderNumber || "22222222"
       });
-      if (res2.meta.status !== 200)
-        return common_vendor.index.$showError("\u9884\u4ED8\u8BA2\u5355\u751F\u6210\u5931\u8D25\uFF01");
-      const payInfo = res2.message.pay;
-      const [err, succ] = await common_vendor.index.requestPayment(payInfo);
-      if (err)
-        return common_vendor.index.$showMsg("\u8BA2\u5355\u672A\u652F\u4ED8\uFF01");
-      const {
-        data: res3
-      } = await common_vendor.index.$http.post("/api/public/v1/my/orders/chkOrder", {
-        order_number: orderNumber
-      });
-      if (res3.meta.status !== 200)
-        return common_vendor.index.$showMsg("\u8BA2\u5355\u672A\u652F\u4ED8\uFF01");
       common_vendor.index.showToast({
         title: "\u652F\u4ED8\u5B8C\u6210\uFF01",
         icon: "success"
@@ -102,7 +95,7 @@ const _sfc_main = {
         a: common_vendor.unref(isFullCheck),
         b: common_vendor.o(changeAllState),
         c: common_vendor.t(_ctx.checkedGoodsAmount),
-        d: common_vendor.t(common_vendor.unref(checkedCount)),
+        d: common_vendor.t(_ctx.checkedCount),
         e: common_vendor.o(settlement)
       };
     };

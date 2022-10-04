@@ -24,7 +24,6 @@ const useUserStore = common_vendor.defineStore("m_user", {
     },
     updateUserInfo(userinfo) {
       this.userinfo = userinfo;
-      console.log(99999, userinfo);
       this.saveUserInfoToStorage();
     },
     saveUserInfoToStorage() {
@@ -40,7 +39,6 @@ const useUserStore = common_vendor.defineStore("m_user", {
     },
     updateRedirectInfo(info) {
       this.redirectInfo = info;
-      console.log(this.redirectInfo);
     }
   }
 });
