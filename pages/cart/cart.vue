@@ -14,7 +14,7 @@
     <!-- 循环渲染购物车中的商品信息 -->
     <uni-swipe-action>
       <block v-for="(goods, i) in cart" :key="i">
-        <uni-swipe-action-item :options="options" @click="swipeItemClickHandler(goods)">
+        <uni-swipe-action-item :right-options="options" @click="swipeActionClickHandler(goods)">
           <my-goods :goods="goods" :show-radio="true" :show-num="true" @radio-change="radioChangeHandler"
             @num-change="numberChangeHandler"></my-goods>
         </uni-swipe-action-item>
@@ -68,25 +68,23 @@
 
 
   const options = ref([{
-    text: '删除', // 显示的文本内容
+    text: '确认',
     style: {
-      backgroundColor: '#C00000' // 按钮的背景颜色
+      backgroundColor: '#c00000'
     }
   }])
   // 点击了滑动操作按钮
   function swipeActionClickHandler(goods) {
-    console.log(goods)
     store.removeGoodsById(goods.goods_id)
   }
   // 商品的勾选状态发生了变化
   function radioChangeHandler(valObj) {
-    console.log(valObj) // 输出得到的数据 -> {goods_id: 395, goods_state: false}
-    store.updateGoodsState(val)
+    // 输出得到的数据 -> {goods_id: 395, goods_state: false}
+    store.updateGoodsState(valObj)
   }
   // 商品的数量发生了变化
   function numberChangeHandler(valObj) {
     store.updateGoodsCount(valObj)
-    console.log(e)
   }
 </script>
 

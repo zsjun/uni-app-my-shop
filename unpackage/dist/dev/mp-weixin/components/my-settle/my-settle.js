@@ -94,8 +94,8 @@ const _sfc_main = {
       return {
         a: common_vendor.unref(isFullCheck),
         b: common_vendor.o(changeAllState),
-        c: common_vendor.t(_ctx.checkedGoodsAmount),
-        d: common_vendor.t(_ctx.checkedCount),
+        c: common_vendor.t(common_vendor.unref(store).checkedGoodsAmount),
+        d: common_vendor.t(common_vendor.unref(store).checkedCount),
         e: common_vendor.o(settlement)
       };
     };

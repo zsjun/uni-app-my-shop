@@ -42,7 +42,7 @@ const _sfc_main = {
       });
     }
     function numChangeHandler(val) {
-      $emit("num-change", {
+      $emits("num-change", {
         goods_id: props.goods.goods_id,
         goods_count: +val
       });

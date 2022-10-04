@@ -32,18 +32,19 @@ const _sfc_main = {
     } = common_vendor.storeToRefs(store);
     hooks_badge.badgeMix();
     const options = common_vendor.ref([{
-      text: "\u5220\u9664",
+      text: "\u786E\u8BA4",
       style: {
-        backgroundColor: "#C00000"
+        backgroundColor: "#c00000"
       }
     }]);
+    function swipeActionClickHandler(goods) {
+      store.removeGoodsById(goods.goods_id);
+    }
     function radioChangeHandler(valObj) {
-      console.log(valObj);
-      store.updateGoodsState(val);
+      store.updateGoodsState(valObj);
     }
     function numberChangeHandler(valObj) {
       store.updateGoodsCount(valObj);
-      console.log(e);
     }
     return (_ctx, _cache) => {
       return common_vendor.e({
@@ -61,7 +62,7 @@ const _sfc_main = {
               ["show-radio"]: true,
               ["show-num"]: true
             }),
-            c: common_vendor.o(($event) => _ctx.swipeItemClickHandler(goods)),
+            c: common_vendor.o(($event) => swipeActionClickHandler(goods)),
             d: "77980d86-3-" + i0 + ",77980d86-2",
             e: i
           };
@@ -69,7 +70,7 @@ const _sfc_main = {
         d: common_vendor.o(radioChangeHandler),
         e: common_vendor.o(numberChangeHandler),
         f: common_vendor.p({
-          options: options.value
+          ["right-options"]: options.value
         })
       } : {});
     };

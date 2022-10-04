@@ -66,7 +66,7 @@
   // NumberBox 组件的 change 事件处理函数
   function numChangeHandler(val) {
     // 通过 this.$emit() 触发外界通过 @ 绑定的 num-change 事件
-    $emit('num-change', {
+    $emits('num-change', {
       // 商品的 Id
       goods_id: props.goods.goods_id,
       // 商品的最新数量
