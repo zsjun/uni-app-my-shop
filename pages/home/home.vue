@@ -87,7 +87,7 @@
   // 3. 在 methods 中定义获取数据的方法
   async function getNavList() {
     const res = await uni.$http.get('/api/public/v1/home/catitems')
-    if (res.data.meta.status !== 200) return uni.$showMsg()
+    if (res.data.meta.status !== 200) return uni.$showMsg("获取分类失败")
     navList.value.push(...res.data.message)
   }
   // nav-item 项被点击时候的事件处理函数

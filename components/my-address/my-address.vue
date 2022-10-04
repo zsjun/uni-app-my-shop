@@ -53,11 +53,12 @@
   //   return address.provinceName + address.cityName + address.countyName + address.detailInfo
   // })
   // 选择收货地址
-  async function chooseAddress() {
+  function chooseAddress() {
     // 1. 调用小程序提供的 chooseAddress() 方法，即可使用选择收货地址的功能
     //    返回值是一个数组：第 1 项为错误对象；第 2 项为成功之后的收货地址对象
     uni.chooseAddress({
       success(res) {
+        console.log(33, res)
         // console.log(res.userName)
         // console.log(res.postalCode)
         // console.log(res.provinceName)
@@ -70,11 +71,11 @@
         store.updateAddress(res)
       },
       fail(err) {
-        console.log(err)
+        console.log(23333, err)
         reAuth()
       }
     })
-    const [err, succ] = await uni.chooseAddress().catch(err => err)
+    // const [err, succ] = await uni.chooseAddress().catch(err => err)
 
     // 2. 用户成功的选择了收货地址
     // if (err === null && succ.errMsg === 'chooseAddress:ok') {

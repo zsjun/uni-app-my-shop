@@ -15,9 +15,9 @@ function badgeMix() {
   function setBadge() {
     common_vendor.index.setTabBarBadge({
       index: 2,
-      text: total + ""
+      text: store.total + ""
     });
   }
-  return;
+  return setBadge;
 }
 exports.badgeMix = badgeMix;

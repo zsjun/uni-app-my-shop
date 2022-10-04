@@ -17,17 +17,17 @@ const _sfc_main = {
       address,
       addstr
     } = common_vendor.storeToRefs(store);
-    async function chooseAddress() {
+    function chooseAddress() {
       common_vendor.index.chooseAddress({
         success(res) {
+          console.log(33, res);
           store.updateAddress(res);
         },
         fail(err) {
-          console.log(err);
+          console.log(23333, err);
           reAuth();
         }
       });
-      await common_vendor.index.chooseAddress().catch((err) => err);
     }
     function reAuth() {
       common_vendor.index.showModal({

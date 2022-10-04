@@ -36,7 +36,7 @@ const _sfc_main = {
     async function getNavList() {
       const res = await common_vendor.index.$http.get("/api/public/v1/home/catitems");
       if (res.data.meta.status !== 200)
-        return common_vendor.index.$showMsg();
+        return common_vendor.index.$showMsg("\u83B7\u53D6\u5206\u7C7B\u5931\u8D25");
       navList.value.push(...res.data.message);
     }
     function navClickHandler(item) {
